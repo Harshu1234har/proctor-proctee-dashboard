@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proctor–Proctee Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #93c5fd, #fbcfe8);
+      min-height: 100vh;
+    }
+    h1 { text-align: center; padding: 20px; }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      cursor: pointer;
+    }
+    button {
+      padding: 8px 14px;
+      margin: 6px 4px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #6366f1;
+      color: white;
+    }
+    button.delete { background: #ef4444; }
+    button.secondary { background: #22c55e; }
+    .list { max-width: 950px; margin: auto; padding: 10px; }
+    .item {
+      background: white;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+    .click { color: #4f46e5; cursor: pointer; font-weight: bold; }
+    .hidden { display: none; }
+    input {
+      width: 90%;
+      padding: 8px;
+      margin: 6px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Proctor–Proctee Dashboard</h1>
+
+<!-- HOME -->
+<div id="home" class="container">
+  <div class="card" onclick="showProctors()">
+    <h2>Proctors</h2>
+    <p>Manage faculty proctors</p>
+  </div>
+
+  <div class="card" onclick="showProctees()">
+    <h2>Proctees</h2>
+    <p>View student details</p>
+  </div>
+
+  <div class="card" onclick="showAdmin()">
+    <h2>Admin</h2>
+    <p>Full system control</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin" class="list hidden">
+  <button onclick="goHome()">Back</button>
+  <h2>Admin Panel</h2>
+
+  <div class="item">
+    <h3>Admin Rights</h3>
+    <ul>
+      <li>✔ Create / Edit / Delete Proctors</li>
+      <li>✔ Assign Proctees to Proctors</li>
+      <li>✔ View all Proctees & Proctors</li>
+      <li>✔ System Reports</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h3>Create Proctor</h3>
+    <input placeholder="Proctor Name" />
+    <input placeholder="Department" />
+    <input placeholder="Email" />
+    <button class="secondary">Create</button>
+  </div>
+
+  <div class="item">
+    <h3>Existing Proctors</h3>
+    <p>Dr. Kumar – CSE</p>
+    <p>Dr. Sheela – ECE</p>
+    <p>Dr. Ramesh – ISE</p>
+    <button>Edit</button>
+    <button class="delete">Delete</button>
+  </div>
+</div>
+
+<!-- PROCTOR LIST -->
+<div id="proctorList" class="list hidden">
+  <button onclick="goHome()">Back</button>
+  <h2>Proctors</h2>
+  <div class="item click" onclick="selectProctor('Dr. Kumar','CSE')">Dr. Kumar (CSE)</div>
+  <div class="item click" onclick="selectProctor('Dr. Sheela','ECE')">Dr. Sheela (ECE)</div>
+  <div class="item click" onclick="selectProctor('Dr. Ramesh','ISE')">Dr. Ramesh (ISE)</div>
+</div>
+
+<!-- PROCTOR RIGHTS -->
+<div id="proctorRights" class="list hidden">
+  <button onclick="showProctors()">Back</button>
+  <h2 id="proctorName"></h2>
+  <p><strong>Rights:</strong> Can Create, Edit, Delete Proctees</p>
+
+  <div class="item">
+    <h3>Create Proctee</h3>
+    <input placeholder="USN" />
+    <input placeholder="Name" />
+    <input placeholder="Gmail" />
+    <button class="secondary">Create</button>
+  </div>
+
+  <div class="item">
+    <h3>Edit Proctee</h3>
+    <p>USN: 1KT23CS037</p>
+    <p>Name: Rahul</p>
+    <button>Edit</button>
+  </div>
+
+  <div class="item">
+    <h3>Delete Proctee</h3>
+    <p>USN: 1KT23CS021 (Ananya)</p>
+    <button class="delete">Delete</button>
+  </div>
+</div>
+
+<!-- PROCTEES LIST -->
+<div id="proctees" class="list hidden">
+  <button onclick="goHome()">Back</button>
+
+  <div class="item"><p class="click" onclick="showDetails('1KT23CS001','Aman','aman@mail.com','CSE','1st','9000000001')">USN: 1KT23CS001</p><p>Gmail: aman@mail.com</p></div>
+  <div class="item"><p class="click" onclick="showDetails('1KT23CS012','Sneha','sneha@mail.com','CSE','2nd','9000000002')">USN: 1KT23CS012</p><p>Gmail: sneha@mail.com</p></div>
+  <div class="item"><p class="click" onclick="showDetails('1KT23CS021','Ananya','ananya@mail.com','ISE','2nd','9000000003')">USN: 1KT23CS021</p><p>Gmail: ananya@mail.com</p></div>
+  <div class="item"><p class="click" onclick="showDetails('1KT23CS037','Rahul','rahul@mail.com','CSE','3rd','9000000004')">USN: 1KT23CS037</p><p>Gmail: rahul@mail.com</p></div>
+  <div class="item"><p class="click" onclick="showDetails('1KT23CS045','Kiran','kiran@mail.com','CSE','4th','9000000005')">USN: 1KT23CS045</p><p>Gmail: kiran@mail.com</p></div>
+  <div class="item"><p class="click" onclick="showDetails('1KT23IS056','Megha','megha@mail.com','ISE','3rd','9000000006')">USN: 1KT23IS056</p><p>Gmail: megha@mail.com</p></div>
+  <div class="item"><p class="click" onclick="showDetails('1KT23EC061','Suresh','suresh@mail.com','ECE','4th','9000000007')">USN: 1KT23EC061</p><p>Gmail: suresh@mail.com</p></div>
+</div>
+
+<!-- PROCTEE DETAILS -->
+<div id="details" class="list hidden">
+  <button onclick="showProctees()">Back</button>
+  <div class="item">
+    <h3>Proctee Full Details</h3>
+    <p id="d-usn"></p>
+    <p id="d-name"></p>
+    <p id="d-gmail"></p>
+    <p id="d-branch"></p>
+    <p id="d-year"></p>
+    <p id="d-phone"></p>
+  </div>
+</div>
+
+<script>
+  function hideAll() {
+    ['home','admin','proctorList','proctorRights','proctees','details'].forEach(id => {
+      document.getElementById(id).classList.add('hidden');
+    });
+  }
+
+  function goHome() {
+    hideAll();
+    document.getElementById('home').classList.remove('hidden');
+  }
+
+  function showAdmin() {
+    hideAll();
+    document.getElementById('admin').classList.remove('hidden');
+  }
+
+  function showProctors() {
+    hideAll();
+    document.getElementById('proctorList').classList.remove('hidden');
+  }
+
+  function selectProctor(name, dept) {
+    hideAll();
+    document.getElementById('proctorRights').classList.remove('hidden');
+    document.getElementById('proctorName').innerText = name + ' (' + dept + ')';
+  }
+
+  function showProctees() {
+    hideAll();
+    document.getElementById('proctees').classList.remove('hidden');
+  }
+
+  function showDetails(usn, name, gmail, branch, year, phone) {
+    hideAll();
+    document.getElementById('details').classList.remove('hidden');
+    document.getElementById('d-usn').innerText = 'USN: ' + usn;
+    document.getElementById('d-name').innerText = 'Name: ' + name;
+    document.getElementById('d-gmail').innerText = 'Gmail: ' + gmail;
+    document.getElementById('d-branch').innerText = 'Branch: ' + branch;
+    document.getElementById('d-year').innerText = 'Year: ' + year;
+    document.getElementById('d-phone').innerText = 'Phone: ' + phone;
+  }
+</script>
+
+</body>
+</html>
